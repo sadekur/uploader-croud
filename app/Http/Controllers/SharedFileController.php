@@ -55,7 +55,7 @@ class SharedFileController extends Controller
 
         abort_unless($upload->previewable, 404);
 
-        return \Storage::disk($upload->disk)->response($upload->path, $upload->original_name, [
+        return Storage::disk($upload->disk)->response($upload->path, $upload->original_name, [
             'Content-Type' => $upload->mime_type,
             'X-Content-Type-Options' => 'nosniff',
         ]);
