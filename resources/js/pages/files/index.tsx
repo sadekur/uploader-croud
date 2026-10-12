@@ -157,7 +157,8 @@ export default function FilesIndex({ uploads, filters }: FilesIndexProps) {
                                                     <span className="sr-only">Download {upload.title}</span>
                                                 </a>
                                             </Button>
-                                            <DropdownMenu>
+                                            {/* Non-modal so the dialogs opened from it don't leave the page unclickable. */}
+                                            <DropdownMenu modal={false}>
                                                 <DropdownMenuTrigger asChild>
                                                     <Button variant="ghost" size="icon" title="More actions">
                                                         <MoreHorizontal />
