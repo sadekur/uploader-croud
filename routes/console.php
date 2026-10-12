@@ -3,6 +3,10 @@
 use App\Models\User;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
+
+// Permanently removes files that have been in the trash longer than Upload::TRASH_DAYS.
+Schedule::command('model:prune')->daily();
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
