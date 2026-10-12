@@ -23,6 +23,7 @@ php artisan test             # same tests, Laravel-styled output
 vendor/bin/pint              # PHP formatting (Laravel Pint)
 npm run lint                 # ESLint with --fix
 npm run format               # Prettier on resources/ (sorts imports and Tailwind classes)
+npx tsc --noEmit             # TypeScript type check (no npm script for it; Vite does not type-check)
 npm run format:check
 ```
 
