@@ -43,9 +43,7 @@ class SharedFileController extends Controller
     {
         $upload = $this->findShared($token);
 
-        return $upload->disk === null
-            ? abort(404)
-            : \Storage::disk($upload->disk)->download($upload->path, $upload->original_name);
+        return Storage::disk($upload->disk)->download($upload->path, $upload->original_name);
     }
 
     /**
