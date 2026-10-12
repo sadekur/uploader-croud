@@ -12,7 +12,7 @@ export function NavMain({ items = [], title = 'Platform' }: { items: NavItem[]; 
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton
                             asChild
-                            isActive={page.url === item.url || page.url.startsWith(`${item.url}/`) || page.url.startsWith(`${item.url}?`)}
+                            isActive={item.isActive ?? (page.url === item.url || page.url.startsWith(`${item.url}/`))}
                         >
                             <Link href={item.url} prefetch>
                                 {item.icon && <item.icon />}

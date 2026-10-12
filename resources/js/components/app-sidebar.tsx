@@ -3,27 +3,29 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { LayoutGrid, Upload } from 'lucide-react';
+import { Files, FolderOpen, LayoutGrid, Trash2, Users } from 'lucide-react';
 import AppLogo from './app-logo';
-
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        url: '/dashboard',
-        icon: LayoutGrid,
-    },
-];
-
-const adminNavItems: NavItem[] = [
-    {
-        title: 'Uploads',
-        url: '/admin/uploads',
-        icon: Upload,
-    },
-];
 
 export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;
+    const { url } = usePage();
+
+    // Several items share the /files path, so work out which one is current here.
+    const [path, query = ''] = url.split('?');
+    const allScope = new URLSearchParams(query).get('scope') === 'all';
+    const inTrash = path.startsWith('/files/trash');
+    const inFiles = path === '/files' || path.startsWith('/files/');
+
+    const mainNavItems: NavItem[] = [
+        { title: 'Dashboard', url: '/dashboard', icon: LayoutGrid, isActive: path === '/dashboard' },
+        { title: 'My files', url: '/files', icon: FolderOpen, isActive: inFiles && !inTrash && !allScope },
+        { title: 'Trash', url: '/files/trash', icon: Trash2, isActive: inTrash && !allScope },
+    ];
+
+    const adminNavItems: NavItem[] = [
+        { title: 'All files', url: '/files?scope=all', icon: Files, isActive: inFiles && allScope },
+        { title: 'Users', url: '/admin/users', icon: Users, isActive: path.startsWith('/admin/users') },
+    ];
 
     return (
         <Sidebar collapsible="icon" variant="inset">
