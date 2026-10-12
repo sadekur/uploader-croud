@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Built on the official Laravel 12 React starter kit: Laravel + Inertia.js v2 + React 19 + TypeScript + Tailwind CSS v4 + shadcn/ui. The app-specific "uploader" features haven't been written yet. What exists now is the starter kit's auth, dashboard and settings scaffolding.
+Built on the official Laravel 12 React starter kit: Laravel + Inertia.js v2 + React 19 + TypeScript + Tailwind CSS v4 + shadcn/ui. On top of the starter kit's auth, dashboard and settings scaffolding, there's an admin panel with CRUD for file uploads.
 
 ## Commands
 
@@ -39,16 +39,19 @@ The CI workflows in `.github/workflows` run on `main`/`develop`, but this repo's
 
 **Inertia request flow:** Laravel routes return `Inertia::render('<page>')` instead of Blade views. The page name maps to `resources/js/pages/<page>.tsx`, so `'settings/profile'` resolves to `pages/settings/profile.tsx`. Both `resources/js/app.tsx` (client) and `resources/js/ssr.jsx` (SSR) resolve pages by globbing `./pages/**/*.tsx`. `resources/views/app.blade.php` is the only Blade root template.
 
-**Shared props:** `app/Http/Middleware/HandleInertiaRequests.php::share()` adds `name`, `quote` and `auth.user` to every page. If you add a shared prop, also update the `SharedData` interface in `resources/js/types/index.ts`. Pages read shared props with `usePage<SharedData>().props`.
+**Shared props:** `app/Http/Middleware/HandleInertiaRequests.php::share()` adds `name`, `quote`, `auth.user` and `flash.success` to every page. Controllers set the flash with `->with('success', ...)`, and `components/flash-message.tsx` displays it. If you add a shared prop, also update the `SharedData` interface in `resources/js/types/index.ts`. Pages read shared props with `usePage<SharedData>().props`.
 
-**Routing:** `routes/web.php` includes `routes/auth.php` (login, registration, password reset, email verification) and `routes/settings.php` (profile, password, appearance). Ziggy provides a global `route()` helper in TS (declared in `app.tsx`), so the frontend refers to Laravel named routes, e.g. `route('dashboard')`. Middleware is registered in `bootstrap/app.php` (Laravel 12 style; there's no `Kernel.php`).
+**Routing:** `routes/web.php` includes `routes/auth.php` (login, registration, password reset, email verification) `routes/settings.php` (profile, password, appearance) and `routes/admin.php`. Ziggy provides a global `route()` helper in TS (declared in `app.tsx`), so the frontend refers to Laravel named routes, e.g. `route('dashboard')`. Middleware is registered in `bootstrap/app.php` (Laravel 12 style; there's no `Kernel.php`).
 
 **Frontend layout:**
 - `@/*` → `resources/js/*` (tsconfig alias)
-- `components/ui/` holds shadcn/ui primitives (configured in `components.json`). Add new ones with the shadcn CLI rather than writing them by hand.
+- `components/ui/` holds shadcn/ui primitives (configured in `components.json`). Add new ones with the shadcn CLI rather than writing them by hand. Pipe a newline into it (`printf '
+' | npx shadcn@2.4.0 add <name> --yes`) to get past its React 19 prompt. Afterwards, check the generated imports: it has written `import { cn } from "cn"` and installed an unrelated npm package called `cn`. The import should be `@/lib/utils`.
 - Pages wrap themselves in a layout: `layouts/app-layout.tsx` (takes `breadcrumbs`) for authenticated pages, `layouts/auth-layout.tsx` for auth screens, and `layouts/settings/layout.tsx` for the settings sub-nav. `app-layout` delegates to `layouts/app/app-sidebar-layout.tsx`. Change that import to switch to the header layout.
 - Sidebar navigation items are defined in `components/app-sidebar.tsx`.
 - `hooks/use-appearance.tsx` handles light/dark/system theme, stored in localStorage and a cookie. `initializeTheme()` runs on boot.
 - Forms use Inertia's `useForm`. Validation errors come back as `errors` and are shown with `components/input-error.tsx`.
 
-**Backend:** Controllers are split into `app/Http/Controllers/Auth` and `app/Http/Controllers/Settings`. Validation lives in FormRequests under `app/Http/Requests`.
+**Admin panel:** Admin access comes from `users.is_admin`. The column isn't mass-assignable, so promote users with `php artisan user:make-admin <email>` or `User::factory()->admin()`. The `admin` middleware alias (`EnsureUserIsAdmin`) returns 403 for everyone else. Admin routes live in `routes/admin.php` under the `/admin` prefix and the `admin.` name prefix. The Admin sidebar group only renders when `auth.user.is_admin` is true. `Upload` files are stored on the private `local` disk (`storage/app/private`) and are only served through `admin.uploads.download`. The model's `path`/`disk` are hidden from serialization, and its `deleted` event removes the file. Updates that include a file have to be sent as `POST` with `_method: 'put'`, because PHP doesn't parse multipart PUT bodies (see `components/admin/upload-form.tsx`). The upload size limit is `StoreUploadRequest::MAX_FILE_SIZE`, and PHP's `upload_max_filesize`/`post_max_size` must be at least that high.
+
+**Backend:** Controllers are split into `app/Http/Controllers/Auth`, `app/Http/Controllers/Settings` and `app/Http/Controllers/Admin`. Validation lives in FormRequests under `app/Http/Requests`.
