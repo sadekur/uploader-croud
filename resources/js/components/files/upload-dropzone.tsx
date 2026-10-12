@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { cn, formatBytes } from '@/lib/utils';
 import { CircleAlert, CircleCheck, FileUp, LoaderCircle, X } from 'lucide-react';
-import { type DragEvent, useEffect, useRef, useState } from 'react';
+import { type DragEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 type Status = 'waiting' | 'uploading' | 'done' | 'error';
 
@@ -82,7 +82,10 @@ export default function UploadDropzone({ maxFileSize, onFinished }: UploadDropzo
     const inputRef = useRef<HTMLInputElement>(null);
     const nextId = useRef(1);
 
-    const update = (id: number, changes: Partial<QueuedFile>) => setQueue((items) => items.map((item) => (item.id === id ? { ...item, ...changes } : item)));
+    const update = useCallback(
+        (id: number, changes: Partial<QueuedFile>) => setQueue((items) => items.map((item) => (item.id === id ? { ...item, ...changes } : item))),
+        [],
+    );
 
     const addFiles = (files: FileList | null) => {
         if (!files?.length) return;
@@ -110,7 +113,7 @@ export default function UploadDropzone({ maxFileSize, onFinished }: UploadDropzo
         uploadFile(next.file, (progress) => update(next.id, { progress }))
             .then(() => update(next.id, { status: 'done', progress: 100 }))
             .catch((error: string) => update(next.id, { status: 'error', error }));
-    }, [queue]);
+    }, [queue, update]);
 
     const busy = queue.some((item) => item.status === 'waiting' || item.status === 'uploading');
     const uploaded = queue.filter((item) => item.status === 'done').length;
