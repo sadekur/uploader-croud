@@ -43,6 +43,17 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
+    }
+
+    /**
+     * The files this user has uploaded.
+     *
+     * @return HasMany<Upload, $this>
+     */
+    public function uploads(): HasMany
+    {
+        return $this->hasMany(Upload::class);
     }
 }
