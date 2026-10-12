@@ -175,9 +175,7 @@ export default function UploadDropzone({ maxFileSize, onFinished }: UploadDropzo
             {queue.length > 0 && (
                 <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">
-                            {busy ? 'Uploading…' : `${uploaded} of ${queue.length} uploaded`}
-                        </p>
+                        <p className="text-sm font-medium">{busy ? 'Uploading…' : `${uploaded} of ${queue.length} uploaded`}</p>
                         {!busy && (
                             <Button variant="ghost" size="sm" onClick={() => setQueue([])}>
                                 Clear list

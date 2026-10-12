@@ -114,7 +114,9 @@ export default function Trash({ uploads, filters, trashDays }: TrashProps) {
                                         <TableCell className="whitespace-nowrap">
                                             <div>{new Date(upload.deleted_at!).toLocaleDateString()}</div>
                                             <div className="text-muted-foreground text-xs">
-                                                {remaining > 0 ? `Gone for good in ${remaining} day${remaining === 1 ? '' : 's'}` : 'Deleted at next cleanup'}
+                                                {remaining > 0
+                                                    ? `Gone for good in ${remaining} day${remaining === 1 ? '' : 's'}`
+                                                    : 'Deleted at next cleanup'}
                                             </div>
                                         </TableCell>
                                         <TableCell>

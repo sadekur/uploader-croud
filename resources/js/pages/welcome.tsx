@@ -46,7 +46,9 @@ const steps = [
 export default function Welcome() {
     const { auth, name } = usePage<SharedData>().props;
 
-    const primaryAction = auth.user ? { label: 'Go to my files', href: route('files.index') } : { label: 'Create an account', href: route('register') };
+    const primaryAction = auth.user
+        ? { label: 'Go to my files', href: route('files.index') }
+        : { label: 'Create an account', href: route('register') };
 
     return (
         <>
@@ -86,7 +88,8 @@ export default function Welcome() {
                             Upload, preview and share your files in one place
                         </h1>
                         <p className="text-muted-foreground mx-auto mt-5 max-w-2xl text-lg text-pretty">
-                            {name} keeps your documents, images and other files in private storage. Preview them in the browser, and share them with a link that expires when you want it to.
+                            {name} keeps your documents, images and other files in private storage. Preview them in the browser, and share them with a
+                            link that expires when you want it to.
                         </p>
 
                         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

@@ -50,7 +50,14 @@ export default function EditUser({ user }: { user: ManagedUser }) {
 
                     <div className="grid gap-2">
                         <Label htmlFor="email">Email address</Label>
-                        <Input id="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} required autoComplete="off" />
+                        <Input
+                            id="email"
+                            type="email"
+                            value={data.email}
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                            autoComplete="off"
+                        />
                         <p className="text-muted-foreground text-xs">Changing the email marks it as unverified.</p>
                         <InputError message={errors.email} />
                     </div>

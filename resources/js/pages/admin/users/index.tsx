@@ -94,11 +94,11 @@ export default function UsersIndex({ users, filters }: UsersIndexProps) {
                                                 {!user.email_verified_at && ' · unverified'}
                                             </div>
                                         </TableCell>
-                                        <TableCell>
-                                            {user.is_admin ? <Badge>Admin</Badge> : <Badge variant="secondary">User</Badge>}
-                                        </TableCell>
+                                        <TableCell>{user.is_admin ? <Badge>Admin</Badge> : <Badge variant="secondary">User</Badge>}</TableCell>
                                         <TableCell className="text-right tabular-nums">{user.uploads_count}</TableCell>
-                                        <TableCell className="text-right whitespace-nowrap tabular-nums">{formatBytes(user.uploads_sum_size ?? 0)}</TableCell>
+                                        <TableCell className="text-right whitespace-nowrap tabular-nums">
+                                            {formatBytes(user.uploads_sum_size ?? 0)}
+                                        </TableCell>
                                         <TableCell className="whitespace-nowrap">{new Date(user.created_at).toLocaleDateString()}</TableCell>
                                         <TableCell>
                                             <div className="flex justify-end gap-1">

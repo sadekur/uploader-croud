@@ -26,11 +26,15 @@ export default function SearchInput({ value, url, params = {}, placeholder = 'Se
         }
 
         const timeout = setTimeout(() => {
-            router.get(url, { ...JSON.parse(paramsKey), ...(term ? { search: term } : {}) }, {
-                preserveState: true,
-                preserveScroll: true,
-                replace: true,
-            });
+            router.get(
+                url,
+                { ...JSON.parse(paramsKey), ...(term ? { search: term } : {}) },
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    replace: true,
+                },
+            );
         }, 300);
 
         return () => clearTimeout(timeout);

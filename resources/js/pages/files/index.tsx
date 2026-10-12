@@ -183,7 +183,10 @@ export default function FilesIndex({ uploads, filters }: FilesIndexProps) {
                                                         </Link>
                                                     </DropdownMenuItem>
                                                     <DropdownMenuSeparator />
-                                                    <DropdownMenuItem onSelect={() => setTrashId(upload.id)} className="text-destructive focus:text-destructive">
+                                                    <DropdownMenuItem
+                                                        onSelect={() => setTrashId(upload.id)}
+                                                        className="text-destructive focus:text-destructive"
+                                                    >
                                                         <Trash2 className="text-destructive" />
                                                         Move to trash
                                                     </DropdownMenuItem>
@@ -208,8 +211,8 @@ export default function FilesIndex({ uploads, filters }: FilesIndexProps) {
                 title="Move to trash?"
                 description={
                     <>
-                        &ldquo;{uploadToTrash?.title}&rdquo; will be moved to the trash. You can restore it from there, or it will be deleted for good after
-                        30 days. Its share link stops working while it&rsquo;s in the trash.
+                        &ldquo;{uploadToTrash?.title}&rdquo; will be moved to the trash. You can restore it from there, or it will be deleted for good
+                        after 30 days. Its share link stops working while it&rsquo;s in the trash.
                     </>
                 }
                 confirmLabel="Move to trash"
