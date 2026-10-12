@@ -59,53 +59,55 @@ export default function ShareDialog({ upload, onClose }: ShareDialogProps) {
                 <DialogTitle>Share &ldquo;{upload?.title}&rdquo;</DialogTitle>
                 <DialogDescription>Anyone with the link can view and download this file without logging in.</DialogDescription>
 
-                {upload?.share_url ? (
-                    <div className="space-y-4">
-                        <div className="flex gap-2">
-                            <Input value={upload.share_url} readOnly onFocus={(e) => e.target.select()} aria-label="Share link" />
-                            <Button variant="outline" size="icon" onClick={copy} title="Copy link">
-                                {copied ? <Check /> : <Copy />}
-                                <span className="sr-only">Copy link</span>
-                            </Button>
-                        </div>
+                <div className="space-y-4">
+                    {upload?.share_url && (
+                        <>
+                            <div className="flex gap-2">
+                                <Input value={upload.share_url} readOnly onFocus={(e) => e.target.select()} aria-label="Share link" />
+                                <Button variant="outline" size="icon" onClick={copy} title="Copy link">
+                                    {copied ? <Check /> : <Copy />}
+                                    <span className="sr-only">Copy link</span>
+                                </Button>
+                            </div>
 
-                        <p className="text-muted-foreground text-sm">
-                            {upload.share_expires_at ? `Expires ${new Date(upload.share_expires_at).toLocaleString()}.` : 'This link never expires.'}
-                        </p>
+                            <p className="text-muted-foreground text-sm">
+                                {upload.share_expires_at
+                                    ? `Expires ${new Date(upload.share_expires_at).toLocaleString()}.`
+                                    : 'This link never expires.'}
+                            </p>
+                        </>
+                    )}
 
-                        <div className="flex flex-wrap justify-between gap-2">
-                            <Button variant="outline" onClick={createLink} disabled={processing}>
-                                New link
-                            </Button>
+                    <div className="grid gap-2">
+                        <Label htmlFor="share-expiry">{upload?.share_url ? 'New link expires after' : 'Link expires after'}</Label>
+                        <Select value={expiry} onValueChange={setExpiry}>
+                            <SelectTrigger id="share-expiry">
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {expiryOptions.map((option) => (
+                                    <SelectItem key={option.value} value={option.value}>
+                                        {option.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        {upload?.share_url && (
+                            <p className="text-muted-foreground text-xs">A new link replaces the current one, which then stops working.</p>
+                        )}
+                    </div>
+
+                    <div className="flex flex-wrap justify-between gap-2">
+                        <Button onClick={createLink} disabled={processing}>
+                            {upload?.share_url ? 'Create new link' : 'Create share link'}
+                        </Button>
+                        {upload?.share_url && (
                             <Button variant="destructive" onClick={turnOff} disabled={processing}>
                                 Turn off sharing
                             </Button>
-                        </div>
-                        <p className="text-muted-foreground text-xs">A new link replaces the current one, which then stops working.</p>
+                        )}
                     </div>
-                ) : (
-                    <div className="space-y-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="share-expiry">Link expires after</Label>
-                            <Select value={expiry} onValueChange={setExpiry}>
-                                <SelectTrigger id="share-expiry">
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {expiryOptions.map((option) => (
-                                        <SelectItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-
-                        <Button onClick={createLink} disabled={processing}>
-                            Create share link
-                        </Button>
-                    </div>
-                )}
+                </div>
             </DialogContent>
         </Dialog>
     );
