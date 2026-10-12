@@ -117,9 +117,7 @@ export default function UploadsIndex({ uploads, filters }: UploadsIndexProps) {
                                 <TableRow key={upload.id}>
                                     <TableCell className="max-w-64">
                                         <div className="truncate font-medium">{upload.title}</div>
-                                        {upload.description && (
-                                            <div className="text-muted-foreground truncate text-xs">{upload.description}</div>
-                                        )}
+                                        {upload.description && <div className="text-muted-foreground truncate text-xs">{upload.description}</div>}
                                     </TableCell>
                                     <TableCell className="max-w-48">
                                         <div className="truncate">{upload.original_name}</div>
@@ -192,8 +190,8 @@ export default function UploadsIndex({ uploads, filters }: UploadsIndexProps) {
                 <DialogContent>
                     <DialogTitle>Delete this upload?</DialogTitle>
                     <DialogDescription>
-                        &ldquo;{uploadToDelete?.title}&rdquo; and its file ({uploadToDelete?.original_name}) will be permanently deleted. This cannot be
-                        undone.
+                        &ldquo;{uploadToDelete?.title}&rdquo; and its file ({uploadToDelete?.original_name}) will be permanently deleted. This cannot
+                        be undone.
                     </DialogDescription>
                     <DialogFooter>
                         <DialogClose asChild>

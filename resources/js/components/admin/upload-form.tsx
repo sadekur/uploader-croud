@@ -77,8 +77,8 @@ export default function UploadForm({ upload, maxFileSize }: UploadFormProps) {
 
                 {isEditing && (
                     <p className="text-muted-foreground text-sm">
-                        Current file: <span className="text-foreground font-medium">{upload.original_name}</span> ({formatBytes(upload.size)}).
-                        Leave empty to keep it.
+                        Current file: <span className="text-foreground font-medium">{upload.original_name}</span> ({formatBytes(upload.size)}). Leave
+                        empty to keep it.
                     </p>
                 )}
 
