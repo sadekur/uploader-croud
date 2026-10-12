@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\ShareLinkController;
 use App\Http\Controllers\SharedFileController;
+use App\Http\Controllers\ShareLinkController;
 use App\Http\Controllers\TrashController;
 use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
