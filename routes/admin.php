@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\UploadController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::redirect('/', 'admin/uploads')->name('index');
+    Route::redirect('/', 'admin/users')->name('index');
 
-    Route::get('uploads/{upload}/download', [UploadController::class, 'download'])->name('uploads.download');
-    Route::resource('uploads', UploadController::class)->except('show');
+    // All files are managed from the shared file pages with the "All users" scope.
+    Route::redirect('uploads', '/files?scope=all')->name('uploads.index');
+
+    Route::resource('users', UserController::class)->only(['index', 'edit', 'update', 'destroy']);
 });
