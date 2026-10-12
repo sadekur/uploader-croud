@@ -30,12 +30,14 @@ export default function UploadsIndex({ uploads, filters }: UploadsIndexProps) {
 
     // Re-query the server a moment after the user stops typing.
     useEffect(() => {
-        if (search === filters.search) {
+        const term = search.trim();
+
+        if (term === filters.search) {
             return;
         }
 
         const timeout = setTimeout(() => {
-            router.get(route('admin.uploads.index'), search ? { search } : {}, {
+            router.get(route('admin.uploads.index'), term ? { search: term } : {}, {
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,
