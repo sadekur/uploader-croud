@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Built on the official Laravel 12 React starter kit: Laravel + Inertia.js v2 + React 19 + TypeScript + Tailwind CSS v4 + shadcn/ui. On top of the starter kit's auth, dashboard and settings scaffolding, there's an admin panel with CRUD for file uploads.
+Built on the official Laravel 12 React starter kit: Laravel + Inertia.js v2 + React 19 + TypeScript + Tailwind CSS v4 + shadcn/ui. On top of the starter kit's auth and settings, it's a file uploader. Users upload, preview, share (by expiring public link) and trash their own files. Admins can also manage every file and every user.
 
 ## Commands
 
