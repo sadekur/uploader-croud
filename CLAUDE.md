@@ -45,8 +45,7 @@ The CI workflows in `.github/workflows` run on `main`/`develop`, but this repo's
 
 **Frontend layout:**
 - `@/*` → `resources/js/*` (tsconfig alias)
-- `components/ui/` holds shadcn/ui primitives (configured in `components.json`). Add new ones with the shadcn CLI rather than writing them by hand. Pipe a newline into it (`printf '
-' | npx shadcn@2.4.0 add <name> --yes`) to get past its React 19 prompt. Afterwards, check the generated imports: it has written `import { cn } from "cn"` and installed an unrelated npm package called `cn`. The import should be `@/lib/utils`.
+- `components/ui/` holds shadcn/ui primitives (configured in `components.json`). Add new ones with the shadcn CLI rather than writing them by hand. Pipe a newline into it (`printf '\n' | npx shadcn@2.4.0 add <name> --yes`) to get past its React 19 prompt. Afterwards, check the generated imports: it has written `import { cn } from "cn"` and installed an unrelated npm package called `cn`. The import should be `@/lib/utils`.
 - Pages wrap themselves in a layout: `layouts/app-layout.tsx` (takes `breadcrumbs`) for authenticated pages, `layouts/auth-layout.tsx` for auth screens, and `layouts/settings/layout.tsx` for the settings sub-nav. `app-layout` delegates to `layouts/app/app-sidebar-layout.tsx`. Change that import to switch to the header layout.
 - Sidebar navigation items are defined in `components/app-sidebar.tsx`.
 - `hooks/use-appearance.tsx` handles light/dark/system theme, stored in localStorage and a cookie. `initializeTheme()` runs on boot.
