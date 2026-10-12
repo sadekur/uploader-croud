@@ -1,6 +1,6 @@
 <?php
 
-namespace AppHttpRequestsPLOADS;
+namespace App\Http\Requests\Uploads;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
