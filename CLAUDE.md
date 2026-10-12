@@ -41,7 +41,7 @@ The CI workflows in `.github/workflows` run on `main`/`develop`, but this repo's
 
 **Shared props:** `app/Http/Middleware/HandleInertiaRequests.php::share()` adds `name`, `quote`, `auth.user` and `flash.success` to every page. Controllers set the flash with `->with('success', ...)`, and `components/flash-message.tsx` displays it. If you add a shared prop, also update the `SharedData` interface in `resources/js/types/index.ts`. Pages read shared props with `usePage<SharedData>().props`.
 
-**Routing:** `routes/web.php` includes `routes/auth.php` (login, registration, password reset, email verification) `routes/settings.php` (profile, password, appearance) and `routes/admin.php`. Ziggy provides a global `route()` helper in TS (declared in `app.tsx`), so the frontend refers to Laravel named routes, e.g. `route('dashboard')`. Middleware is registered in `bootstrap/app.php` (Laravel 12 style; there's no `Kernel.php`).
+**Routing:** `routes/web.php` includes `routes/auth.php` (login, registration, password reset, email verification) `routes/settings.php` (profile, password, appearance), `routes/files.php` (file CRUD, trash, sharing and the public `/s/{token}` share pages) and `routes/admin.php`. Ziggy provides a global `route()` helper in TS (declared in `app.tsx`), so the frontend refers to Laravel named routes, e.g. `route('dashboard')`. Middleware is registered in `bootstrap/app.php` (Laravel 12 style; there's no `Kernel.php`).
 
 **Frontend layout:**
 - `@/*` → `resources/js/*` (tsconfig alias)
