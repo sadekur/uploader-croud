@@ -27,6 +27,8 @@ npx tsc --noEmit             # TypeScript type check (no npm script for it; Vite
 npm run format:check
 ```
 
+Feature tests that render an Inertia page go through `app.blade.php`'s `@vite` directive. They fail with a missing-manifest error unless `public/build/manifest.json` exists (from `npm run build`) or the Vite dev server is running. `TestCase` doesn't call `withoutVite()`. After adding a new page, rebuild before running tests.
+
 Tests are PHPUnit class-style (`Tests\TestCase`, `RefreshDatabase`). `tests/Pest.php` exists, but Pest isn't installed, so don't write Pest-style tests unless you add `pestphp/pest` first. `phpunit.xml` runs tests against in-memory SQLite with array cache, session and mail drivers and the sync queue.
 
 `.env.example` defaults to SQLite (`database/database.sqlite`). The local `.env` uses MySQL.
