@@ -24,8 +24,11 @@ vendor/bin/pint              # PHP formatting (Laravel Pint)
 npm run lint                 # ESLint with --fix
 npm run format               # Prettier on resources/ (sorts imports and Tailwind classes)
 npx tsc --noEmit             # TypeScript type check (no npm script for it; Vite does not type-check)
-npm run format:check
+npm run format:check         # Prettier check without writing
+vendor/bin/pint --test       # Pint check without writing
 ```
+
+The `lint.yml` workflow runs the fixers (`pint`, `npm run format`, `npm run lint`), not the check variants, and its auto-commit step is commented out. So it never fails on style problems. Use the check commands above to verify style. CI runs PHP 8.4.
 
 Feature tests that render an Inertia page go through `app.blade.php`'s `@vite` directive. They fail with a missing-manifest error unless `public/build/manifest.json` exists (from `npm run build`) or the Vite dev server is running. `TestCase` doesn't call `withoutVite()`. After adding a new page, rebuild before running tests.
 
